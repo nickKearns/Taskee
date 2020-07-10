@@ -8,7 +8,7 @@
 
 import UIKit
 import MaterialComponents
-class ProjectCollectionViewCell: MDCCollectionViewCell {
+class ProjectCollectionViewCell: MDCCardCollectionCell {
     
     static let identifier: String =  "ProjectCollectionViewCell"
 
@@ -17,6 +17,12 @@ class ProjectCollectionViewCell: MDCCollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        self.backgroundColor = .white
+
+        //TODO: Configure the MDCCardCollectionCell specific properties
+        self.cornerRadius = 4.0;
+        self.setBorderWidth(1.0, for:.normal)
+        self.setBorderColor(.lightGray, for: .normal)
     }
     
     func setupCell(title: String) {

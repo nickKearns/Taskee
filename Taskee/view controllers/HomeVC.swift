@@ -8,12 +8,18 @@
 
 import UIKit
 import MaterialComponents
+import CoreData
 
 
 class HomeVC: UICollectionViewController {
     
+    var store = TaskeeStore()
+    
+    var projects: [Project] = []
     
     let bottomAppBar = MDCBottomAppBarView()
+    
+    
     
     
     
@@ -38,6 +44,11 @@ class HomeVC: UICollectionViewController {
         self.collectionView.reloadData()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        store.saveContext()
+    }
+    
     
     
     
@@ -45,7 +56,6 @@ class HomeVC: UICollectionViewController {
     func setupBottomAppBar() {
         bottomAppBar.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(bottomAppBar)
-        bottomAppBar.tintColor = .systemGray2
         
         NSLayoutConstraint.activate([
             bottomAppBar.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
@@ -54,22 +64,41 @@ class HomeVC: UICollectionViewController {
         ])
         
         bottomAppBar.floatingButton.setTitle("Add", for: .normal)
-        bottomAppBar.floatingButton.backgroundColor = .systemGray2
-        bottomAppBar.barTintColor = .systemGray2
+        bottomAppBar.floatingButton.backgroundColor = .systemTeal
+        bottomAppBar.barTintColor = .systemTeal
         
         bottomAppBar.floatingButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         
     }
     
     
+    
+    
+    
+    
     @objc func addButtonTapped() {
-        
+        let newProjectVC = NewProjectVC()
+        navigationController?.pushViewController(newProjectVC, animated: true)
+    }
+    
+
+    func createNewItem() -> Project {
+        let newItem = NSEntityDescription.insertNewObject(forEntityName: "Project", into: store.persistentContainer.viewContext) as! Project
+        return newItem
     }
     
     
-        
-    
-    
+     func deleteItem(at index: Int) {
+            let viewContext = store.persistentContainer.viewContext
+            viewContext.delete(projects[index])
+            
+            projects.remove(at: index)
+            collectionView.deleteItems(at: [IndexPath(row: index, section: 0)])
+            
+            store.saveContext()
+        }
+
+
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 30
     }
@@ -95,7 +124,7 @@ extension HomeVC: UICollectionViewDelegateFlowLayout {
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width * 0.90, height: view.frame.height * 0.50)
+        return CGSize(width: view.frame.width * 0.90, height: view.frame.height * 0.15)
     }
     
     

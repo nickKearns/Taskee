@@ -16,8 +16,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="135" height="74"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2l7-a4-B5g">
-                        <rect key="frame" x="46.5" y="26.5" width="42" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2l7-a4-B5g">
+                        <rect key="frame" x="20" y="27" width="42" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -25,8 +25,8 @@
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="2l7-a4-B5g" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="ESe-MV-LdZ"/>
-                <constraint firstItem="2l7-a4-B5g" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="olv-oG-TzY"/>
+                <constraint firstItem="2l7-a4-B5g" firstAttribute="leading" secondItem="ZTg-uK-7eu" secondAttribute="leading" constant="20" id="T7W-Ib-9W9"/>
+                <constraint firstItem="2l7-a4-B5g" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="tEB-CA-mUn"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="135" height="74"/>

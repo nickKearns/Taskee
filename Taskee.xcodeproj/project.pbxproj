@@ -9,12 +9,18 @@
 /* Begin PBXBuildFile section */
 		011287DF24B3E3FA00C2F1B0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011287DE24B3E3FA00C2F1B0 /* AppDelegate.swift */; };
 		011287E124B3E3FA00C2F1B0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011287E024B3E3FA00C2F1B0 /* SceneDelegate.swift */; };
-		011287E324B3E3FA00C2F1B0 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011287E224B3E3FA00C2F1B0 /* HomeVC.swift */; };
 		011287E924B3E3FA00C2F1B0 /* Taskee.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 011287E724B3E3FA00C2F1B0 /* Taskee.xcdatamodeld */; };
 		011287EB24B3E3FD00C2F1B0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 011287EA24B3E3FD00C2F1B0 /* Assets.xcassets */; };
 		011287EE24B3E3FD00C2F1B0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 011287EC24B3E3FD00C2F1B0 /* LaunchScreen.storyboard */; };
 		011287FD24B40C6F00C2F1B0 /* ProjectCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011287FB24B40C6F00C2F1B0 /* ProjectCollectionViewCell.swift */; };
 		011287FE24B40C6F00C2F1B0 /* ProjectCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 011287FC24B40C6F00C2F1B0 /* ProjectCollectionViewCell.xib */; };
+		0112880324B5715A00C2F1B0 /* Project+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011287FF24B5715A00C2F1B0 /* Project+CoreDataClass.swift */; };
+		0112880424B5715A00C2F1B0 /* Task+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0112880024B5715A00C2F1B0 /* Task+CoreDataProperties.swift */; };
+		0112880524B5715A00C2F1B0 /* Project+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0112880124B5715A00C2F1B0 /* Project+CoreDataProperties.swift */; };
+		0112880624B5715A00C2F1B0 /* Task+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0112880224B5715A00C2F1B0 /* Task+CoreDataClass.swift */; };
+		0112880824B571BE00C2F1B0 /* TaskeeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0112880724B571BE00C2F1B0 /* TaskeeStore.swift */; };
+		0112880924B6626500C2F1B0 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011287E224B3E3FA00C2F1B0 /* HomeVC.swift */; };
+		0112880C24B663E400C2F1B0 /* NewProjectVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0112880B24B663E400C2F1B0 /* NewProjectVC.swift */; };
 		2B9C91111EB2582972ECFB15 /* Pods_Taskee.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ED9517335A52914BECFF3CB /* Pods_Taskee.framework */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +35,12 @@
 		011287EF24B3E3FD00C2F1B0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		011287FB24B40C6F00C2F1B0 /* ProjectCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectCollectionViewCell.swift; sourceTree = "<group>"; };
 		011287FC24B40C6F00C2F1B0 /* ProjectCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectCollectionViewCell.xib; sourceTree = "<group>"; };
+		011287FF24B5715A00C2F1B0 /* Project+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Project+CoreDataClass.swift"; sourceTree = "<group>"; };
+		0112880024B5715A00C2F1B0 /* Task+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		0112880124B5715A00C2F1B0 /* Project+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Project+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		0112880224B5715A00C2F1B0 /* Task+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataClass.swift"; sourceTree = "<group>"; };
+		0112880724B571BE00C2F1B0 /* TaskeeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskeeStore.swift; sourceTree = "<group>"; };
+		0112880B24B663E400C2F1B0 /* NewProjectVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProjectVC.swift; sourceTree = "<group>"; };
 		3ED9517335A52914BECFF3CB /* Pods_Taskee.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Taskee.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69B13D737F00563F389E9352 /* Pods-Taskee.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Taskee.release.xcconfig"; path = "Target Support Files/Pods-Taskee/Pods-Taskee.release.xcconfig"; sourceTree = "<group>"; };
 		A7132BFC42D7EE6943C4620A /* Pods-Taskee.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Taskee.debug.xcconfig"; path = "Target Support Files/Pods-Taskee/Pods-Taskee.debug.xcconfig"; sourceTree = "<group>"; };
@@ -67,11 +79,12 @@
 		011287DD24B3E3FA00C2F1B0 /* Taskee */ = {
 			isa = PBXGroup;
 			children = (
+				0112880A24B663CE00C2F1B0 /* view controllers */,
 				011287FA24B3F86500C2F1B0 /* views */,
 				011287F924B3F86000C2F1B0 /* models */,
 				011287DE24B3E3FA00C2F1B0 /* AppDelegate.swift */,
 				011287E024B3E3FA00C2F1B0 /* SceneDelegate.swift */,
-				011287E224B3E3FA00C2F1B0 /* HomeVC.swift */,
+				0112880724B571BE00C2F1B0 /* TaskeeStore.swift */,
 				011287EA24B3E3FD00C2F1B0 /* Assets.xcassets */,
 				011287EC24B3E3FD00C2F1B0 /* LaunchScreen.storyboard */,
 				011287EF24B3E3FD00C2F1B0 /* Info.plist */,
@@ -83,6 +96,10 @@
 		011287F924B3F86000C2F1B0 /* models */ = {
 			isa = PBXGroup;
 			children = (
+				0112880224B5715A00C2F1B0 /* Task+CoreDataClass.swift */,
+				0112880124B5715A00C2F1B0 /* Project+CoreDataProperties.swift */,
+				0112880024B5715A00C2F1B0 /* Task+CoreDataProperties.swift */,
+				011287FF24B5715A00C2F1B0 /* Project+CoreDataClass.swift */,
 			);
 			path = models;
 			sourceTree = "<group>";
@@ -94,6 +111,15 @@
 				011287FC24B40C6F00C2F1B0 /* ProjectCollectionViewCell.xib */,
 			);
 			path = views;
+			sourceTree = "<group>";
+		};
+		0112880A24B663CE00C2F1B0 /* view controllers */ = {
+			isa = PBXGroup;
+			children = (
+				011287E224B3E3FA00C2F1B0 /* HomeVC.swift */,
+				0112880B24B663E400C2F1B0 /* NewProjectVC.swift */,
+			);
+			path = "view controllers";
 			sourceTree = "<group>";
 		};
 		1C51DC1286068119208F6EE7 /* Pods */ = {
@@ -229,8 +255,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				011287FD24B40C6F00C2F1B0 /* ProjectCollectionViewCell.swift in Sources */,
+				0112880924B6626500C2F1B0 /* HomeVC.swift in Sources */,
 				011287E924B3E3FA00C2F1B0 /* Taskee.xcdatamodeld in Sources */,
-				011287E324B3E3FA00C2F1B0 /* HomeVC.swift in Sources */,
+				0112880624B5715A00C2F1B0 /* Task+CoreDataClass.swift in Sources */,
+				0112880C24B663E400C2F1B0 /* NewProjectVC.swift in Sources */,
+				0112880324B5715A00C2F1B0 /* Project+CoreDataClass.swift in Sources */,
+				0112880424B5715A00C2F1B0 /* Task+CoreDataProperties.swift in Sources */,
+				0112880824B571BE00C2F1B0 /* TaskeeStore.swift in Sources */,
+				0112880524B5715A00C2F1B0 /* Project+CoreDataProperties.swift in Sources */,
 				011287DF24B3E3FA00C2F1B0 /* AppDelegate.swift in Sources */,
 				011287E124B3E3FA00C2F1B0 /* SceneDelegate.swift in Sources */,
 			);
