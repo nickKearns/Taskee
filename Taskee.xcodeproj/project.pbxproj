@@ -21,6 +21,7 @@
 		0112880824B571BE00C2F1B0 /* TaskeeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0112880724B571BE00C2F1B0 /* TaskeeStore.swift */; };
 		0112880924B6626500C2F1B0 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011287E224B3E3FA00C2F1B0 /* HomeVC.swift */; };
 		0112880C24B663E400C2F1B0 /* NewProjectVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0112880B24B663E400C2F1B0 /* NewProjectVC.swift */; };
+		018A1C5D24B93A46001B4C76 /* ProjectDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018A1C5C24B93A46001B4C76 /* ProjectDetailVC.swift */; };
 		2B9C91111EB2582972ECFB15 /* Pods_Taskee.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ED9517335A52914BECFF3CB /* Pods_Taskee.framework */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 		0112880224B5715A00C2F1B0 /* Task+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Task+CoreDataClass.swift"; sourceTree = "<group>"; };
 		0112880724B571BE00C2F1B0 /* TaskeeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskeeStore.swift; sourceTree = "<group>"; };
 		0112880B24B663E400C2F1B0 /* NewProjectVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProjectVC.swift; sourceTree = "<group>"; };
+		018A1C5C24B93A46001B4C76 /* ProjectDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectDetailVC.swift; sourceTree = "<group>"; };
 		3ED9517335A52914BECFF3CB /* Pods_Taskee.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Taskee.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		69B13D737F00563F389E9352 /* Pods-Taskee.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Taskee.release.xcconfig"; path = "Target Support Files/Pods-Taskee/Pods-Taskee.release.xcconfig"; sourceTree = "<group>"; };
 		A7132BFC42D7EE6943C4620A /* Pods-Taskee.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Taskee.debug.xcconfig"; path = "Target Support Files/Pods-Taskee/Pods-Taskee.debug.xcconfig"; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 			children = (
 				011287E224B3E3FA00C2F1B0 /* HomeVC.swift */,
 				0112880B24B663E400C2F1B0 /* NewProjectVC.swift */,
+				018A1C5C24B93A46001B4C76 /* ProjectDetailVC.swift */,
 			);
 			path = "view controllers";
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 				011287FD24B40C6F00C2F1B0 /* ProjectCollectionViewCell.swift in Sources */,
 				0112880924B6626500C2F1B0 /* HomeVC.swift in Sources */,
 				011287E924B3E3FA00C2F1B0 /* Taskee.xcdatamodeld in Sources */,
+				018A1C5D24B93A46001B4C76 /* ProjectDetailVC.swift in Sources */,
 				0112880624B5715A00C2F1B0 /* Task+CoreDataClass.swift in Sources */,
 				0112880C24B663E400C2F1B0 /* NewProjectVC.swift in Sources */,
 				0112880324B5715A00C2F1B0 /* Project+CoreDataClass.swift in Sources */,

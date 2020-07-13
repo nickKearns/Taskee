@@ -13,14 +13,16 @@ import MaterialComponents
 
 class NewProjectVC: UIViewController {
     
+    var store: TaskeeStore?
     
+
 
 
     let saveButton: MDCButton = {
         let b = MDCButton()
         b.setTitle("Save", for: .normal)
         b.translatesAutoresizingMaskIntoConstraints = false
-        
+        b.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         return b
     }()
     
@@ -50,6 +52,7 @@ class NewProjectVC: UIViewController {
         super.viewDidAppear(true)
         self.view.backgroundColor = .white
         setupTextField()
+        setupButton()
 
 
     }
@@ -66,6 +69,29 @@ class NewProjectVC: UIViewController {
             titleTextField.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: -175)
             
         ])
+    }
+    
+    
+    
+    func setupButton() {
+        self.view.addSubview(saveButton)
+        saveButton.setBackgroundColor(.systemTeal)
+        
+        NSLayoutConstraint.activate([
+            saveButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            saveButton.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 100)
+        
+        
+        ])
+    }
+    
+    @objc
+    func saveButtonTapped() {
+        let newProject = Project(context: (store?.persistentContainer.viewContext)!)
+        newProject.title = titleTextField.text
+        store?.saveContext()
+        navigationController?.popViewController(animated: true)
+        
         
         
     

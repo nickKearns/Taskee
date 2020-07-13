@@ -20,7 +20,15 @@ class HomeVC: UICollectionViewController {
     let bottomAppBar = MDCBottomAppBarView()
     
     
-    
+    lazy var fetchedResultsController: NSFetchedResultsController<Project> = {
+        let fetchRequest: NSFetchRequest<Project> = Project.fetchRequest()
+//      fetchRequest.sortDescriptors = [NSSortDescriptor(key: "qualifyingZone", ascending: true), NSSortDescriptor(key: "wins", ascending: false), NSSortDescriptor(key: "teamName", ascending: true)]
+
+      let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                                managedObjectContext: store.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+      return fetchedResultsController
+    }()
+
     
     
     
@@ -42,14 +50,29 @@ class HomeVC: UICollectionViewController {
         setupBottomAppBar()
         self.title = "Projects"
         self.collectionView.reloadData()
+        updateDataSource()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         store.saveContext()
+        updateDataSource()
     }
     
-    
+    private func updateDataSource() {
+        self.store.fetchPersistedData {
+            (fetchItemsResult) in
+            
+            switch fetchItemsResult {
+            case let .success(projects):
+                self.projects = projects
+            case .failure(_):
+                self.projects.removeAll()
+                
+            }
+            self.collectionView.reloadSections(IndexSet(integer: 0))
+        }
+    }
     
     
     
@@ -78,6 +101,7 @@ class HomeVC: UICollectionViewController {
     
     @objc func addButtonTapped() {
         let newProjectVC = NewProjectVC()
+        newProjectVC.store = store
         navigationController?.pushViewController(newProjectVC, animated: true)
     }
     
@@ -100,20 +124,28 @@ class HomeVC: UICollectionViewController {
 
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 30
+        return projects.count
     }
     
     
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProjectCollectionViewCell.identifier, for: indexPath) as! ProjectCollectionViewCell
-        
-        cell.setupCell(title: "testing label")
+        let currentProject = projects[indexPath.row]
+        cell.setupCell(title: currentProject.title!)
         
         
         return cell
     }
     
+    
+    override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let currentProject = projects[indexPath.row]
+        let projectDetailVC = ProjectDetailVC()
+        projectDetailVC.store = store
+        projectDetailVC.currentProject = currentProject
+        navigationController?.pushViewController(projectDetailVC, animated: true)
+    }
     
     
     

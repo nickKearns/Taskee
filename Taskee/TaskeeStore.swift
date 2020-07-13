@@ -41,9 +41,29 @@ class TaskeeStore: NSObject {
             }
         }
     }
+    
+    func fetchPersistedData(completion: @escaping (FetchItemsResult) -> Void) {
+        
+        let fetchRequest: NSFetchRequest<Project> = Project.fetchRequest()
+        let viewContext = persistentContainer.viewContext
+        
+        do {
+            let allProjects = try viewContext.fetch(fetchRequest)
+            completion(.success(allProjects))
+        } catch {
+            completion(.failure(error))
+        }
+        
+    }
 
 
 
 
 
+}
+
+
+enum FetchItemsResult {
+    case success([Project])
+    case failure(Error)
 }
