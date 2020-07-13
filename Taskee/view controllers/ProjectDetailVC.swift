@@ -50,7 +50,11 @@ class ProjectDetailVC: UIViewController {
             preferredStyle: .actionSheet
         )
         
-        let actionDelete = UIAlertAction(title: "Delete \(currentProject.title)", style: .destructive) { (_) in
+        guard let currentTitle = currentProject.title else {
+            return
+        }
+        
+        let actionDelete = UIAlertAction(title: "Delete \(currentTitle)", style: .destructive) { (_) in
             self.store?.persistentContainer.viewContext.delete(self.currentProject)
             self.navigationController?.popViewController(animated: true)
         }

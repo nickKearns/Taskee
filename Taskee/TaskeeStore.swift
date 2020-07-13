@@ -27,6 +27,10 @@ class TaskeeStore: NSObject {
         }
         return container
     }()
+    
+    lazy var managedContext: NSManagedObjectContext = {
+        return self.persistentContainer.viewContext
+    }()
 
      // MARK: - Save Core Data Context
     func saveContext() {

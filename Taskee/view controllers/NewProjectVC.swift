@@ -15,17 +15,10 @@ class NewProjectVC: UIViewController {
     
     var store: TaskeeStore?
     
+    let bottomAppBar = MDCBottomAppBarView()
 
 
 
-    let saveButton: MDCButton = {
-        let b = MDCButton()
-        b.setTitle("Save", for: .normal)
-        b.translatesAutoresizingMaskIntoConstraints = false
-        b.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
-        return b
-    }()
-    
     let titleTextField: MDCTextField = {
         let t = MDCTextField()
         t.translatesAutoresizingMaskIntoConstraints = false
@@ -52,7 +45,8 @@ class NewProjectVC: UIViewController {
         super.viewDidAppear(true)
         self.view.backgroundColor = .white
         setupTextField()
-        setupButton()
+        setupBottomAppBar()
+        
 
 
     }
@@ -72,18 +66,25 @@ class NewProjectVC: UIViewController {
     }
     
     
-    
-    func setupButton() {
-        self.view.addSubview(saveButton)
-        saveButton.setBackgroundColor(.systemTeal)
+    func setupBottomAppBar() {
+        bottomAppBar.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(bottomAppBar)
         
         NSLayoutConstraint.activate([
-            saveButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
-            saveButton.topAnchor.constraint(equalTo: titleTextField.bottomAnchor, constant: 100)
-        
-        
+            bottomAppBar.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            bottomAppBar.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+            bottomAppBar.heightAnchor.constraint(equalToConstant: 80)
         ])
+        
+        bottomAppBar.floatingButton.setTitle("Save", for: .normal)
+        bottomAppBar.floatingButton.backgroundColor = .systemTeal
+        bottomAppBar.barTintColor = .systemTeal
+        
+        bottomAppBar.floatingButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
+        
     }
+    
+    
     
     @objc
     func saveButtonTapped() {

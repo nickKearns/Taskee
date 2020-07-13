@@ -11,7 +11,7 @@ import MaterialComponents
 import CoreData
 
 
-class HomeVC: UICollectionViewController {
+class HomeVC: UIViewController {
     
     var store = TaskeeStore()
     
@@ -22,41 +22,42 @@ class HomeVC: UICollectionViewController {
     
     lazy var fetchedResultsController: NSFetchedResultsController<Project> = {
         let fetchRequest: NSFetchRequest<Project> = Project.fetchRequest()
-//      fetchRequest.sortDescriptors = [NSSortDescriptor(key: "qualifyingZone", ascending: true), NSSortDescriptor(key: "wins", ascending: false), NSSortDescriptor(key: "teamName", ascending: true)]
-
-      let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                                managedObjectContext: store.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-      return fetchedResultsController
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        
+        let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
+                                                                  managedObjectContext: store.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        
+        fetchedResultsController.delegate = self
+        
+        return fetchedResultsController
     }()
-
     
     
     
-    init() {
-        super.init(collectionViewLayout: UICollectionViewFlowLayout())
-    }
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    
+    let projectTableView: UITableView = {
+        let t = UITableView()
+        t.translatesAutoresizingMaskIntoConstraints = false
+        t.rowHeight = 100
+        return t
+    }()
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        self.collectionView.backgroundColor = .white
-        self.collectionView.delegate = self
-        self.collectionView.dataSource = self
-        self.collectionView.register(UINib(nibName: "ProjectCollectionViewCell", bundle: .main), forCellWithReuseIdentifier: ProjectCollectionViewCell.identifier)
+        self.view.backgroundColor = .white
+        
         setupBottomAppBar()
+        setupTableView()
+
         self.title = "Projects"
-        self.collectionView.reloadData()
-        updateDataSource()
+        getProjects()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         store.saveContext()
-        updateDataSource()
+        getProjects()
     }
     
     private func updateDataSource() {
@@ -70,8 +71,57 @@ class HomeVC: UICollectionViewController {
                 self.projects.removeAll()
                 
             }
-            self.collectionView.reloadSections(IndexSet(integer: 0))
+            self.projectTableView.reloadData()
         }
+    }
+    
+    func getProjects() {
+        do {
+            try fetchedResultsController.performFetch()
+        } catch let nserror as NSError {
+            print(nserror)
+        }
+        
+    }
+    
+    
+    func setupTableView() {
+        self.view.addSubview(projectTableView)
+        projectTableView.register(UINib(nibName: "ProjectTableViewCell", bundle: .main), forCellReuseIdentifier: ProjectTableViewCell.identifier)
+        
+        
+        projectTableView.delegate = self
+        projectTableView.dataSource = self
+        
+        
+        NSLayoutConstraint.activate([
+            
+            projectTableView.topAnchor.constraint(equalToSystemSpacingBelow: self.view.safeAreaLayoutGuide.topAnchor, multiplier: 0),
+            projectTableView.bottomAnchor.constraint(equalTo: bottomAppBar.topAnchor),
+            projectTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            projectTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+        
+        ])
+        
+    }
+    
+    
+    
+    func configure(cell: UITableViewCell, for indexPath: IndexPath) {
+        
+        
+        
+        guard let cell = cell as? ProjectTableViewCell else {
+            return
+        }
+        
+        
+        
+        let project = fetchedResultsController.object(at: indexPath)
+        
+        cell.projectTitleLabel.text = project.title
+        
+        
     }
     
     
@@ -105,61 +155,70 @@ class HomeVC: UICollectionViewController {
         navigationController?.pushViewController(newProjectVC, animated: true)
     }
     
+    
 
-    func createNewItem() -> Project {
-        let newItem = NSEntityDescription.insertNewObject(forEntityName: "Project", into: store.persistentContainer.viewContext) as! Project
-        return newItem
-    }
-    
-    
-     func deleteItem(at index: Int) {
-            let viewContext = store.persistentContainer.viewContext
-            viewContext.delete(projects[index])
-            
-            projects.remove(at: index)
-            collectionView.deleteItems(at: [IndexPath(row: index, section: 0)])
-            
-            store.saveContext()
-        }
-
-
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return projects.count
-    }
-    
-    
-    
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProjectCollectionViewCell.identifier, for: indexPath) as! ProjectCollectionViewCell
-        let currentProject = projects[indexPath.row]
-        cell.setupCell(title: currentProject.title!)
-        
-        
-        return cell
-    }
-    
-    
-    override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        let currentProject = projects[indexPath.row]
-        let projectDetailVC = ProjectDetailVC()
-        projectDetailVC.store = store
-        projectDetailVC.currentProject = currentProject
-        navigationController?.pushViewController(projectDetailVC, animated: true)
-    }
     
     
     
 }
 
 
-extension HomeVC: UICollectionViewDelegateFlowLayout {
+extension HomeVC: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return fetchedResultsController.fetchedObjects!.count
+    }
     
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: ProjectTableViewCell.identifier) as! ProjectTableViewCell
+        configure(cell: cell, for: indexPath)
+        return cell
+    }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width * 0.90, height: view.frame.height * 0.15)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let projectDetailVC = ProjectDetailVC()
+        projectDetailVC.store = self.store
+        let currentProject = fetchedResultsController.fetchedObjects![indexPath.row]
+        projectDetailVC.currentProject = currentProject
+        navigationController?.pushViewController(projectDetailVC, animated: true)
     }
     
     
+    
+    
+    
+    
+    
+}
+
+
+extension HomeVC: NSFetchedResultsControllerDelegate {
+  func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    projectTableView.beginUpdates()
+  }
+
+  func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                  didChange anObject: Any,
+                  at indexPath: IndexPath?,
+                  for type: NSFetchedResultsChangeType,
+                  newIndexPath: IndexPath?) {
+
+    switch type {
+    case .insert:
+      projectTableView.insertRows(at: [newIndexPath!], with: .automatic)
+    case .delete:
+      projectTableView.deleteRows(at: [indexPath!], with: .automatic)
+    case .update:
+      let cell = projectTableView.cellForRow(at: indexPath!) as! ProjectTableViewCell
+      configure(cell: cell, for: indexPath!)
+    case .move:
+      projectTableView.deleteRows(at: [indexPath!], with: .automatic)
+      projectTableView.insertRows(at: [newIndexPath!], with: .automatic)
+    }
+  }
+
+  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    projectTableView.endUpdates()
+  }
 }
 
 
