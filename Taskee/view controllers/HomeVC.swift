@@ -49,7 +49,7 @@ class HomeVC: UIViewController {
         
         setupBottomAppBar()
         setupTableView()
-
+        
         self.title = "Projects"
         getProjects()
     }
@@ -60,20 +60,6 @@ class HomeVC: UIViewController {
         getProjects()
     }
     
-    private func updateDataSource() {
-        self.store.fetchPersistedData {
-            (fetchItemsResult) in
-            
-            switch fetchItemsResult {
-            case let .success(projects):
-                self.projects = projects
-            case .failure(_):
-                self.projects.removeAll()
-                
-            }
-            self.projectTableView.reloadData()
-        }
-    }
     
     func getProjects() {
         do {
@@ -85,25 +71,6 @@ class HomeVC: UIViewController {
     }
     
     
-    func setupTableView() {
-        self.view.addSubview(projectTableView)
-        projectTableView.register(UINib(nibName: "ProjectTableViewCell", bundle: .main), forCellReuseIdentifier: ProjectTableViewCell.identifier)
-        
-        
-        projectTableView.delegate = self
-        projectTableView.dataSource = self
-        
-        
-        NSLayoutConstraint.activate([
-            
-            projectTableView.topAnchor.constraint(equalToSystemSpacingBelow: self.view.safeAreaLayoutGuide.topAnchor, multiplier: 0),
-            projectTableView.bottomAnchor.constraint(equalTo: bottomAppBar.topAnchor),
-            projectTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            projectTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
-        
-        ])
-        
-    }
     
     
     
@@ -125,6 +92,26 @@ class HomeVC: UIViewController {
     }
     
     
+    func setupTableView() {
+        self.view.addSubview(projectTableView)
+        projectTableView.register(UINib(nibName: "ProjectTableViewCell", bundle: .main), forCellReuseIdentifier: ProjectTableViewCell.identifier)
+        
+        
+        projectTableView.delegate = self
+        projectTableView.dataSource = self
+        
+        
+        NSLayoutConstraint.activate([
+            
+            projectTableView.topAnchor.constraint(equalToSystemSpacingBelow: self.view.safeAreaLayoutGuide.topAnchor, multiplier: 0),
+            projectTableView.bottomAnchor.constraint(equalTo: bottomAppBar.topAnchor),
+            projectTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+            projectTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+            
+        ])
+        
+    }
+    
     
     func setupBottomAppBar() {
         bottomAppBar.translatesAutoresizingMaskIntoConstraints = false
@@ -137,8 +124,8 @@ class HomeVC: UIViewController {
         ])
         
         bottomAppBar.floatingButton.setTitle("Add", for: .normal)
-        bottomAppBar.floatingButton.backgroundColor = .systemTeal
-        bottomAppBar.barTintColor = .systemTeal
+        bottomAppBar.floatingButton.backgroundColor = .systemGray3
+        bottomAppBar.barTintColor = .systemGray3
         
         bottomAppBar.floatingButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         
@@ -156,7 +143,7 @@ class HomeVC: UIViewController {
     }
     
     
-
+    
     
     
     
@@ -192,33 +179,33 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
 
 
 extension HomeVC: NSFetchedResultsControllerDelegate {
-  func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    projectTableView.beginUpdates()
-  }
-
-  func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
-                  didChange anObject: Any,
-                  at indexPath: IndexPath?,
-                  for type: NSFetchedResultsChangeType,
-                  newIndexPath: IndexPath?) {
-
-    switch type {
-    case .insert:
-      projectTableView.insertRows(at: [newIndexPath!], with: .automatic)
-    case .delete:
-      projectTableView.deleteRows(at: [indexPath!], with: .automatic)
-    case .update:
-      let cell = projectTableView.cellForRow(at: indexPath!) as! ProjectTableViewCell
-      configure(cell: cell, for: indexPath!)
-    case .move:
-      projectTableView.deleteRows(at: [indexPath!], with: .automatic)
-      projectTableView.insertRows(at: [newIndexPath!], with: .automatic)
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        projectTableView.beginUpdates()
     }
-  }
-
-  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    projectTableView.endUpdates()
-  }
+    
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any,
+                    at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType,
+                    newIndexPath: IndexPath?) {
+        
+        switch type {
+        case .insert:
+            projectTableView.insertRows(at: [newIndexPath!], with: .automatic)
+        case .delete:
+            projectTableView.deleteRows(at: [indexPath!], with: .automatic)
+        case .update:
+            let cell = projectTableView.cellForRow(at: indexPath!) as! ProjectTableViewCell
+            configure(cell: cell, for: indexPath!)
+        case .move:
+            projectTableView.deleteRows(at: [indexPath!], with: .automatic)
+            projectTableView.insertRows(at: [newIndexPath!], with: .automatic)
+        }
+    }
+    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        projectTableView.endUpdates()
+    }
 }
 
 

@@ -77,8 +77,8 @@ class NewProjectVC: UIViewController {
         ])
         
         bottomAppBar.floatingButton.setTitle("Save", for: .normal)
-        bottomAppBar.floatingButton.backgroundColor = .systemTeal
-        bottomAppBar.barTintColor = .systemTeal
+        bottomAppBar.floatingButton.backgroundColor = .systemGray3
+        bottomAppBar.barTintColor = .systemGray3
         
         bottomAppBar.floatingButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         

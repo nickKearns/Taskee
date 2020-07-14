@@ -18,7 +18,6 @@ public class Task: NSManagedObject {
         dueDate = Date()
         status = false
         title = ""
-        notes = ""
         
     }
     
