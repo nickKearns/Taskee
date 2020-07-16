@@ -46,10 +46,10 @@ class ProjectDetailVC: UIViewController {
         let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
         let projectPredicate = NSPredicate(format: "project.title = %@", self.currentProject.title!)
         fetchRequest.predicate = projectPredicate
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dueDate", ascending: false)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "status", ascending: true), NSSortDescriptor(key: "dueDate", ascending: false)]
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                                  managedObjectContext: store.persistentContainer.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+                                                                  managedObjectContext: store.persistentContainer.viewContext, sectionNameKeyPath: #keyPath(Task.status), cacheName: nil)
         
         fetchedResultsController.delegate = self
         
@@ -72,13 +72,14 @@ class ProjectDetailVC: UIViewController {
         getTasks()
         
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteButtonTapped))
+        
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         store.saveContext()
-        getTasks()
+        
     }
     
     
@@ -102,6 +103,11 @@ class ProjectDetailVC: UIViewController {
         let currentTask = fetchedResultsController.object(at: indexPath)
         
         
+        if currentTask.status == false {
+            cell.statusButton.setImage(UIImage(named: "unmarked"), for: .normal)
+        } else {
+            cell.statusButton.setImage(UIImage(named: "marked"), for: .normal)
+        }
         
         cell.taskTitleLabel.text = currentTask.title
         let dateFormatter = DateFormatter()
@@ -109,6 +115,15 @@ class ProjectDetailVC: UIViewController {
         let dateAsString = dateFormatter.string(from: currentTask.dueDate!)
         cell.taskDueDateLabel.text = "Due Date " + dateAsString
         
+        cell.tapCallback = {
+            if currentTask.status {
+                currentTask.status = false
+                cell.statusButton.setImage(UIImage(named: "unmarked"), for: .normal)
+            } else {
+                currentTask.status = true
+                cell.statusButton.setImage(UIImage(named: "marked"), for: .normal)
+            }
+        }
     
     
     }
@@ -159,41 +174,25 @@ class ProjectDetailVC: UIViewController {
         newTaskVC.project = currentProject
         navigationController?.pushViewController(newTaskVC, animated: true)
     }
-    
-    @objc
-    func deleteButtonTapped() {
-        let alertTrash = UIAlertController(
-            title: nil,
-            message: "Are you sure you want to delete this project?",
-            preferredStyle: .actionSheet
-        )
-        
-        guard let currentTitle = currentProject.title else {
-            return
-        }
-        
-        let actionDelete = UIAlertAction(title: "Delete \(currentTitle)", style: .destructive) { (_) in
-            self.store?.persistentContainer.viewContext.delete(self.currentProject)
-            self.navigationController?.popViewController(animated: true)
-        }
-        alertTrash.addAction(actionDelete)
-        
-        let actionCancel = UIAlertAction(title: "Cancel", style: .cancel)
-        alertTrash.addAction(actionCancel)
-        
-        present(alertTrash, animated: true)
-    }
-    
-    
-    
 }
 
 
 //MARK: TABLE VIEW FUNCTIONS
 
 extension ProjectDetailVC: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return fetchedResultsController.sections!.count
+    }
+    
+    
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController.fetchedObjects!.count
+        guard let sectionInfo =
+          fetchedResultsController.sections?[section] else {
+          return 0
+        }
+        return sectionInfo.numberOfObjects
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -202,6 +201,11 @@ extension ProjectDetailVC: UITableViewDelegate, UITableViewDataSource {
         
         return cell!
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
     
     
 }
@@ -225,7 +229,7 @@ extension ProjectDetailVC: NSFetchedResultsControllerDelegate {
         case .delete:
             tasksTableView.deleteRows(at: [indexPath!], with: .automatic)
         case .update:
-            let cell = tasksTableView.cellForRow(at: indexPath!) as! ProjectTableViewCell
+            let cell = tasksTableView.cellForRow(at: indexPath!) as! TaskTableViewCell
             configureCell(cell: cell, for: indexPath!)
         case .move:
             tasksTableView.deleteRows(at: [indexPath!], with: .automatic)

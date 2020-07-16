@@ -17,7 +17,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2O0-sr-4JA">
-                        <rect key="frame" x="16" y="12" width="42" height="20.5"/>
+                        <rect key="frame" x="62" y="12" width="42" height="20.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -28,21 +28,30 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vJx-Ei-HTr">
+                        <rect key="frame" x="8" y="0.0" width="49" height="44"/>
+                        <connections>
+                            <action selector="buttonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="BDd-I5-bFa"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="gZP-lY-NJO" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="2O0-sr-4JA" secondAttribute="trailing" id="4vQ-Qq-lge"/>
                     <constraint firstItem="gZP-lY-NJO" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Fpf-ls-YIB"/>
-                    <constraint firstItem="2O0-sr-4JA" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="XhS-we-fPo"/>
+                    <constraint firstItem="vJx-Ei-HTr" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="UaE-kR-A6R"/>
+                    <constraint firstItem="gZP-lY-NJO" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="2O0-sr-4JA" secondAttribute="trailing" id="cRR-Dr-PNU"/>
                     <constraint firstAttribute="trailing" secondItem="gZP-lY-NJO" secondAttribute="trailing" constant="16" id="eab-u2-BQ4"/>
-                    <constraint firstItem="2O0-sr-4JA" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="kCf-ta-hhL"/>
+                    <constraint firstItem="2O0-sr-4JA" firstAttribute="leading" secondItem="vJx-Ei-HTr" secondAttribute="trailing" constant="24" id="gFm-I8-S85"/>
+                    <constraint firstItem="2O0-sr-4JA" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="keG-W9-850"/>
+                    <constraint firstItem="vJx-Ei-HTr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="nXp-VE-4mO"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="statusButton" destination="vJx-Ei-HTr" id="4WT-vz-1CO"/>
                 <outlet property="taskDueDateLabel" destination="gZP-lY-NJO" id="3U9-ev-bDw"/>
                 <outlet property="taskTitleLabel" destination="2O0-sr-4JA" id="8t8-gG-eGg"/>
             </connections>
-            <point key="canvasLocation" x="132" y="141"/>
+            <point key="canvasLocation" x="131.8840579710145" y="140.625"/>
         </tableViewCell>
     </objects>
 </document>

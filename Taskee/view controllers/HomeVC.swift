@@ -163,6 +163,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let projectDetailVC = ProjectDetailVC()
+        tableView.deselectRow(at: indexPath, animated: true)
         projectDetailVC.store = self.store
         let currentProject = fetchedResultsController.fetchedObjects![indexPath.row]
         projectDetailVC.currentProject = currentProject
@@ -170,7 +171,11 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     
-    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            store.managedContext.delete(fetchedResultsController.object(at: indexPath))
+        } 
+    }
     
     
     
