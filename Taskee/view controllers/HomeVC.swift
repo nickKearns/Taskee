@@ -124,8 +124,8 @@ class HomeVC: UIViewController {
         ])
         
         bottomAppBar.floatingButton.setTitle("Add", for: .normal)
-        bottomAppBar.floatingButton.backgroundColor = .systemGray3
-        bottomAppBar.barTintColor = .systemGray3
+        bottomAppBar.floatingButton.backgroundColor = .systemTeal
+        bottomAppBar.barTintColor = .systemTeal
         
         bottomAppBar.floatingButton.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         

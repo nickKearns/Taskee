@@ -12,8 +12,10 @@ class TaskTableViewCell: UITableViewCell {
     
     static let identifier: String = "TaskTableViewCell"
 
+
     @IBOutlet weak var taskTitleLabel: UILabel!
     
+    @IBOutlet weak var taskDueDateLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

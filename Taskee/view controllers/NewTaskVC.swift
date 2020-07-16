@@ -63,6 +63,7 @@ class NewTaskVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        self.title = "New Task"
         setupTextFields()
         setupDatePicker()
         setupBottomAppBar()
@@ -107,8 +108,8 @@ class NewTaskVC: UIViewController {
         ])
         
         bottomAppBar.floatingButton.setTitle("Save", for: .normal)
-        bottomAppBar.floatingButton.backgroundColor = .systemGray3
-        bottomAppBar.barTintColor = .systemGray3
+        bottomAppBar.floatingButton.backgroundColor = .systemTeal
+        bottomAppBar.barTintColor = .systemTeal
 
         
         bottomAppBar.floatingButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)

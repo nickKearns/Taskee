@@ -23,6 +23,7 @@ class NewProjectVC: UIViewController {
         let t = MDCTextField()
         t.translatesAutoresizingMaskIntoConstraints = false
         t.placeholder = "Enter Project Title"
+        t.returnKeyType = .done
         return t
     }()
     
@@ -44,6 +45,7 @@ class NewProjectVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         self.view.backgroundColor = .white
+        self.title = "New Project"
         setupTextField()
         setupBottomAppBar()
         
@@ -65,6 +67,10 @@ class NewProjectVC: UIViewController {
         ])
     }
     
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+    }
+    
     
     func setupBottomAppBar() {
         bottomAppBar.translatesAutoresizingMaskIntoConstraints = false
@@ -77,8 +83,8 @@ class NewProjectVC: UIViewController {
         ])
         
         bottomAppBar.floatingButton.setTitle("Save", for: .normal)
-        bottomAppBar.floatingButton.backgroundColor = .systemGray3
-        bottomAppBar.barTintColor = .systemGray3
+        bottomAppBar.floatingButton.backgroundColor = .systemTeal
+        bottomAppBar.barTintColor = .systemTeal
         
         bottomAppBar.floatingButton.addTarget(self, action: #selector(saveButtonTapped), for: .touchUpInside)
         

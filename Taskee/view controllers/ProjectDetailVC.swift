@@ -12,7 +12,7 @@ import MaterialComponents
 
 
 
-class ProjectDetailVC: UIViewController, NSFetchedResultsControllerDelegate {
+class ProjectDetailVC: UIViewController {
     
     
     var store: TaskeeStore!
@@ -34,8 +34,8 @@ class ProjectDetailVC: UIViewController, NSFetchedResultsControllerDelegate {
         bottomAppBar.translatesAutoresizingMaskIntoConstraints = false
         bottomAppBar.floatingButton.setTitle("Add Task", for: .normal)
         bottomAppBar.floatingButton.titleLabel?.adjustsFontSizeToFitWidth = true
-        bottomAppBar.barTintColor = .systemGray3
-        bottomAppBar.floatingButton.backgroundColor = .systemGray3
+        bottomAppBar.barTintColor = .systemTeal
+        bottomAppBar.floatingButton.backgroundColor = .systemTeal
 
         return bottomAppBar
     }()
@@ -64,7 +64,8 @@ class ProjectDetailVC: UIViewController, NSFetchedResultsControllerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        navigationController?.title = currentProject.title
+        self.title = currentProject.title
+//        navigationController!.navigationBar.prefersLargeTitles = true
         setupBottomAppBar()
         setupTaskTableView()
 
@@ -76,6 +77,7 @@ class ProjectDetailVC: UIViewController, NSFetchedResultsControllerDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        store.saveContext()
         getTasks()
     }
     
@@ -99,7 +101,14 @@ class ProjectDetailVC: UIViewController, NSFetchedResultsControllerDelegate {
         
         let currentTask = fetchedResultsController.object(at: indexPath)
         
+        
+        
         cell.taskTitleLabel.text = currentTask.title
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short
+        let dateAsString = dateFormatter.string(from: currentTask.dueDate!)
+        cell.taskDueDateLabel.text = "Due Date " + dateAsString
+        
     
     
     }
@@ -149,7 +158,6 @@ class ProjectDetailVC: UIViewController, NSFetchedResultsControllerDelegate {
         newTaskVC.store = self.store
         newTaskVC.project = currentProject
         navigationController?.pushViewController(newTaskVC, animated: true)
-        
     }
     
     @objc
@@ -196,10 +204,36 @@ extension ProjectDetailVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     
+}
+
+
+
+extension ProjectDetailVC: NSFetchedResultsControllerDelegate {
+    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tasksTableView.beginUpdates()
+    }
     
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any,
+                    at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType,
+                    newIndexPath: IndexPath?) {
+        
+        switch type {
+        case .insert:
+            tasksTableView.insertRows(at: [newIndexPath!], with: .automatic)
+        case .delete:
+            tasksTableView.deleteRows(at: [indexPath!], with: .automatic)
+        case .update:
+            let cell = tasksTableView.cellForRow(at: indexPath!) as! ProjectTableViewCell
+            configureCell(cell: cell, for: indexPath!)
+        case .move:
+            tasksTableView.deleteRows(at: [indexPath!], with: .automatic)
+            tasksTableView.insertRows(at: [newIndexPath!], with: .automatic)
+        }
+    }
     
-    
-    
-    
-    
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        tasksTableView.endUpdates()
+    }
 }
