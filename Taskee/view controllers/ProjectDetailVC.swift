@@ -19,6 +19,9 @@ class ProjectDetailVC: UIViewController {
     var currentProject: Project!
     var tasks: [Task] = []
     
+    
+    var segmentController = UISegmentedControl()
+    
     //MARK: THE ELEMENTS OF THE VIEW
     var tasksTableView: UITableView = {
         let t = UITableView()
@@ -65,10 +68,10 @@ class ProjectDetailVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         self.title = currentProject.title
-//        navigationController!.navigationBar.prefersLargeTitles = true
+        setupSegmentController()
         setupBottomAppBar()
         setupTaskTableView()
-
+        
         getTasks()
         
         
@@ -140,7 +143,7 @@ class ProjectDetailVC: UIViewController {
         
         NSLayoutConstraint.activate([
             
-            tasksTableView.topAnchor.constraint(equalToSystemSpacingBelow: self.view.safeAreaLayoutGuide.topAnchor, multiplier: 0),
+            tasksTableView.topAnchor.constraint(equalTo: segmentController.bottomAnchor, constant: 10),
             tasksTableView.bottomAnchor.constraint(equalTo: bottomAppBar.topAnchor),
             tasksTableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             tasksTableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
@@ -165,6 +168,27 @@ class ProjectDetailVC: UIViewController {
     }
     
     
+    
+    
+    func setupSegmentController() {
+        
+       
+        
+
+        let segmentItems = ["Pending", "Completed"]
+        segmentController = UISegmentedControl(items: segmentItems)
+        self.view.addSubview(segmentController)
+        segmentController.translatesAutoresizingMaskIntoConstraints = false
+        segmentController.addTarget(self, action: #selector(segmentControllerChanged), for: .valueChanged)
+        segmentController.selectedSegmentIndex = 0
+        NSLayoutConstraint.activate([
+            segmentController.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            segmentController.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            segmentController.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.75)
+            
+        ])
+    }
+    
     //MARK: THE TARGET FUNCTIONS FOR BUTTONS
     
     @objc
@@ -174,6 +198,12 @@ class ProjectDetailVC: UIViewController {
         newTaskVC.project = currentProject
         navigationController?.pushViewController(newTaskVC, animated: true)
     }
+    
+    @objc
+    func segmentControllerChanged() {
+        
+    }
+    
 }
 
 
