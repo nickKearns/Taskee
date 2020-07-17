@@ -213,6 +213,7 @@ class ProjectDetailVC: UIViewController {
         let segmentItems = ["Pending", "Completed"]
         segmentController = UISegmentedControl(items: segmentItems)
         self.view.addSubview(segmentController)
+        segmentController.backgroundColor = .systemTeal
         segmentController.translatesAutoresizingMaskIntoConstraints = false
         segmentController.addTarget(self, action: #selector(segmentControllerChanged), for: .valueChanged)
         segmentController.selectedSegmentIndex = 0

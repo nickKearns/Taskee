@@ -129,6 +129,9 @@ class NewProjectVC: UIViewController, UICollectionViewDataSource {
 }
 
 
+
+//MARK: A lot of the code for the collection view to display the color picking was made with a lot of help from Henry Calderon
+
 extension NewProjectVC: UICollectionViewDelegate {
     
     
@@ -151,6 +154,8 @@ extension NewProjectVC: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         self.pickedColor = colorsArray[indexPath.row]
+        self.view.backgroundColor = colorsArray[indexPath.row]
+        colorPickCollectionView.backgroundColor = colorsArray[indexPath.row]
         
         
     }

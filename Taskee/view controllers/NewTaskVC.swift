@@ -10,7 +10,7 @@ import UIKit
 import MaterialComponents
 
 
-class NewTaskVC: UIViewController {
+class NewTaskVC: UIViewController, UITextFieldDelegate {
     
     var store: TaskeeStore!
     var project: Project!
@@ -76,6 +76,8 @@ class NewTaskVC: UIViewController {
     func setupTextFields() {
         
         self.view.addSubview(taskTitleTextField)
+        taskTitleTextField.returnKeyType = .done
+        taskTitleTextField.delegate = self
         
         NSLayoutConstraint.activate([
             taskTitleTextField.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor, constant: 50),
@@ -95,6 +97,11 @@ class NewTaskVC: UIViewController {
         
         
         
+    }
+    
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
     }
     
     func setupBottomAppBar() {
@@ -146,11 +153,10 @@ class NewTaskVC: UIViewController {
     }
     
 
-
     @objc
     func doneButtonTapped() {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "mm-dd-yyyy"
+        dateFormatter.dateFormat = "MM-dd-yyyy"
         let strDate = dateFormatter.string(from: datePicker.date)
         dateTextField.text = strDate
         dateTextField.resignFirstResponder()
