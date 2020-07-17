@@ -102,7 +102,7 @@ class NewTaskVC: UIViewController {
         self.view.addSubview(bottomAppBar)
         
         NSLayoutConstraint.activate([
-            bottomAppBar.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            bottomAppBar.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             bottomAppBar.widthAnchor.constraint(equalTo: self.view.widthAnchor),
             bottomAppBar.heightAnchor.constraint(equalToConstant: 80)
         ])
@@ -140,6 +140,7 @@ class NewTaskVC: UIViewController {
         newTask.dueDate = datePicker.date
         newTask.status = false
         newTask.project = project
+        print(newTask)
         store?.saveContext()
         navigationController?.popViewController(animated: true)
     }

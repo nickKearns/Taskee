@@ -17,7 +17,7 @@ class ProjectDetailVC: UIViewController {
     
     var store: TaskeeStore!
     var currentProject: Project!
-    var tasks: [Task] = []
+//    var tasks: [Task] = []
     
     
     var segmentController = UISegmentedControl()
@@ -44,15 +44,17 @@ class ProjectDetailVC: UIViewController {
     }()
     
     
+    
+    
     lazy var fetchedResultsController: NSFetchedResultsController<Task> = {
         
         let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
         let projectPredicate = NSPredicate(format: "project.title = %@", self.currentProject.title!)
         fetchRequest.predicate = projectPredicate
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "status", ascending: true), NSSortDescriptor(key: "dueDate", ascending: false)]
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "dueDate", ascending: false)]
         
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
-                                                                  managedObjectContext: store.persistentContainer.viewContext, sectionNameKeyPath: #keyPath(Task.status), cacheName: nil)
+                                                                  managedObjectContext: store.managedContext, sectionNameKeyPath: nil, cacheName: nil)
         
         fetchedResultsController.delegate = self
         
@@ -71,9 +73,7 @@ class ProjectDetailVC: UIViewController {
         setupSegmentController()
         setupBottomAppBar()
         setupTaskTableView()
-        
-        getTasks()
-        
+        getPendingTasks()
         
         
 
@@ -82,6 +82,7 @@ class ProjectDetailVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         store.saveContext()
+        getPendingTasks()
         
     }
     
@@ -90,10 +91,42 @@ class ProjectDetailVC: UIViewController {
     func getTasks() {
         do {
             try fetchedResultsController.performFetch()
+//            print(fetchedResultsController.fetchedObjects)
         } catch let nserror as NSError {
             print(nserror)
         }
     }
+    
+    
+    func getCompletedTasks() {
+//        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        let completedPredicate = NSPredicate(format: "status = true")
+        let projectPredicate = NSPredicate(format: "project = %@", self.currentProject!)
+//        fetchRequest.predicate = NSCompoundPredicate(type: .and, subpredicates: [completedPredicate, projectPredicate])
+        
+        fetchedResultsController.fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [completedPredicate, projectPredicate])
+        do {
+            try fetchedResultsController.performFetch()
+        } catch let nserror as NSError{
+            print(nserror)
+        }
+        
+    }
+    
+    func getPendingTasks() {
+//        let fetchRequest: NSFetchRequest<Task> = Task.fetchRequest()
+        let statusPredicate = NSPredicate(format: "status = false")
+        let projectPredicate = NSPredicate(format: "project = %@", self.currentProject!)
+//        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, projectPredicate])
+        
+        fetchedResultsController.fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [statusPredicate, projectPredicate])
+        do {
+            try fetchedResultsController.performFetch()
+        } catch let nserror as NSError {
+            print(nserror)
+        }
+    }
+    
     
     //MARK: SETTING UP THE TABLE VIEW CELLS
     func configureCell(cell: UITableViewCell, for indexPath: IndexPath) {
@@ -103,6 +136,7 @@ class ProjectDetailVC: UIViewController {
             return
         }
         
+//        print(fetchedResultsController.fetchedObjects)
         let currentTask = fetchedResultsController.object(at: indexPath)
         
         
@@ -127,6 +161,7 @@ class ProjectDetailVC: UIViewController {
                 cell.statusButton.setImage(UIImage(named: "marked"), for: .normal)
             }
         }
+        
     
     
     }
@@ -159,7 +194,7 @@ class ProjectDetailVC: UIViewController {
         self.view.addSubview(bottomAppBar)
         
         NSLayoutConstraint.activate([
-            bottomAppBar.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            bottomAppBar.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             bottomAppBar.widthAnchor.constraint(equalTo: self.view.widthAnchor),
             bottomAppBar.heightAnchor.constraint(equalToConstant: 80)
         ])
@@ -201,6 +236,16 @@ class ProjectDetailVC: UIViewController {
     
     @objc
     func segmentControllerChanged() {
+        switch segmentController.selectedSegmentIndex {
+        case 0:
+            getPendingTasks()
+            tasksTableView.reloadData()
+        case 1:
+            getCompletedTasks()
+            tasksTableView.reloadData()
+        default:
+            break
+        }
         
     }
     
@@ -210,25 +255,15 @@ class ProjectDetailVC: UIViewController {
 //MARK: TABLE VIEW FUNCTIONS
 
 extension ProjectDetailVC: UITableViewDelegate, UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return fetchedResultsController.sections!.count
-    }
-    
-    
+
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let sectionInfo =
-          fetchedResultsController.sections?[section] else {
-          return 0
-        }
-        return sectionInfo.numberOfObjects
+        return fetchedResultsController.fetchedObjects!.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TaskTableViewCell.identifier)
         configureCell(cell: cell!, for: indexPath)
-        
         return cell!
     }
     
@@ -237,7 +272,11 @@ extension ProjectDetailVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     
-    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            store.managedContext.delete(fetchedResultsController.object(at: indexPath))
+        }
+    }
 }
 
 

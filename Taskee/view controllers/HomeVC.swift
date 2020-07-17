@@ -61,6 +61,7 @@ class HomeVC: UIViewController {
     }
     
     
+    
     func getProjects() {
         do {
             try fetchedResultsController.performFetch()
@@ -87,6 +88,7 @@ class HomeVC: UIViewController {
         let project = fetchedResultsController.object(at: indexPath)
         
         cell.projectTitleLabel.text = project.title
+        cell.projectTitleLabel.textColor = project.color
         
         
     }
@@ -118,7 +120,7 @@ class HomeVC: UIViewController {
         self.view.addSubview(bottomAppBar)
         
         NSLayoutConstraint.activate([
-            bottomAppBar.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            bottomAppBar.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             bottomAppBar.widthAnchor.constraint(equalTo: self.view.widthAnchor),
             bottomAppBar.heightAnchor.constraint(equalToConstant: 80)
         ])

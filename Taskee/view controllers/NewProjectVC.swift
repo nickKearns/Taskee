@@ -11,13 +11,17 @@ import MaterialComponents
 
 
 
-class NewProjectVC: UIViewController {
+class NewProjectVC: UIViewController, UICollectionViewDataSource {
     
     var store: TaskeeStore?
     
     let bottomAppBar = MDCBottomAppBarView()
 
-
+    let colorPickCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout.init())
+    
+    var pickedColor = UIColor.white
+    
+    let colorsArray = [UIColor.green, UIColor.blue, UIColor.brown, UIColor.red, UIColor.yellow, UIColor.cyan]
 
     let titleTextField: MDCTextField = {
         let t = MDCTextField()
@@ -48,9 +52,22 @@ class NewProjectVC: UIViewController {
         self.title = "New Project"
         setupTextField()
         setupBottomAppBar()
-        
-
-
+        setupCollectionView()
+    }
+    
+    func setupCollectionView() {
+        colorPickCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(colorPickCollectionView)
+        colorPickCollectionView.backgroundColor = .white
+        colorPickCollectionView.delegate = self
+        colorPickCollectionView.dataSource = self
+        colorPickCollectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        NSLayoutConstraint.activate([
+            colorPickCollectionView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor),
+            colorPickCollectionView.widthAnchor.constraint(equalTo: self.view.widthAnchor, multiplier: 0.75),
+            colorPickCollectionView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+            colorPickCollectionView.bottomAnchor.constraint(equalTo: bottomAppBar.topAnchor, constant: 10)
+        ])
     }
     
     
@@ -77,7 +94,7 @@ class NewProjectVC: UIViewController {
         self.view.addSubview(bottomAppBar)
         
         NSLayoutConstraint.activate([
-            bottomAppBar.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            bottomAppBar.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             bottomAppBar.widthAnchor.constraint(equalTo: self.view.widthAnchor),
             bottomAppBar.heightAnchor.constraint(equalToConstant: 80)
         ])
@@ -96,6 +113,7 @@ class NewProjectVC: UIViewController {
     func saveButtonTapped() {
         let newProject = Project(context: (store?.persistentContainer.viewContext)!)
         newProject.title = titleTextField.text
+        newProject.color = pickedColor
         store?.saveContext()
         navigationController?.popViewController(animated: true)
         
@@ -108,6 +126,49 @@ class NewProjectVC: UIViewController {
     
     
     
+}
+
+
+extension NewProjectVC: UICollectionViewDelegate {
+    
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        colorsArray.count
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+        cell.backgroundColor = colorsArray[indexPath.row]
+        cell.layer.cornerRadius = cell.frame.size.width/2
+        cell.clipsToBounds = true
+        return cell
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.pickedColor = colorsArray[indexPath.row]
+        
+        
+    }
+    
+    
+}
+
+
+extension NewProjectVC: UICollectionViewDelegateFlowLayout{
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 60  , height: 60)
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return  UIEdgeInsets(top: 20 , left: 20  ,  bottom: 20, right: 20)
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 20.0
+    }
 }
 
 extension NewProjectVC: UITextFieldDelegate {
