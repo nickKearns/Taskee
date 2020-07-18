@@ -12,4 +12,11 @@ Ability to delete projects and tasks
 
 # Project views
 ![Project View](HomeVC.png)
+![Add Project View](NewProjectVC.png)
 
+# Tasks View
+![Completed Tasks](completedTasks.png)
+![Pending Tasks](pendingTasks.png)
+
+# Create A Task
+![New Task](newTaskVC.png)
